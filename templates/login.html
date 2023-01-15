@@ -28,5 +28,9 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </fieldset>
   </form>
+  {% if error %}
+  <br />
+  <div class="alert alert-danger" role="alert">{{error}}</div>
+  {% endif %}
 </div>
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container">
   <h4>In Progress Todos</h4>
-  {% for todo in todos %} {% if not todo.completed %}
+  {% for todo in todos %} 
+  {% if not todo.completed %}
   <div class="container">
     <div class="card m-3">
       <h5 class="card-header">In Progress Todos</h5>
@@ -13,12 +14,26 @@
       <form method="POST" action="update_value">
         {% csrf_token %}
         <input type="hidden" name="object_id" value="{{ todo.id }}">
-        <button class="btn btn-primary" type="submit">Update</button>
+        <button class="btn btn-primary" type="submit">Make Completed</button>
       </form>
       </div>
     </div>
   </div>
-  {% endif %} {% endfor %}
+  {% endif %} 
+  {% endfor %}
+
+  <h4>Expired Todos</h4>
+  {% for todo in incomplete_todos %}
+  <div class="container">
+    <div class="card m-3">
+      <h5 class="card-header">Expired Todos</h5>
+      <div class="card-body">
+        <h5 class="card-title">{{todo.title}}</h5>
+        <p class="card-text">{{todo.description}}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 
   <h4>Completed Todos</h4>
   {% for todo in todos %} {% if todo.completed %}
@@ -33,5 +48,9 @@
   </div>
   {% endif %} {% endfor %}
 </div>
+</div>
+
+
+ 
 
 {% endblock %}

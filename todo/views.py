@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, logout
+from datetime import date
 
 from django.http import HttpResponse
 
@@ -10,7 +11,16 @@ from .models import Todo
 def home(request):
     if request.user.is_authenticated:
         todos = Todo.objects.all()
-        return render(request, 'home.html', {'todos': todos})
+
+        today = date.today()
+
+        incomplete_todos = []
+
+        for todo in todos:
+            if todo.completiondate < today:
+                incomplete_todos.append(todo)
+
+        return render(request, 'home.html', {'todos': todos, 'incomplete_todos':  incomplete_todos})
     else:
         return redirect('/')
 
@@ -75,6 +85,8 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             return redirect('/home')
+        else:
+            return render(request, 'login.html', {'error': "Invalid Credentials"})
     else:
         return render(request, 'login.html')
 
