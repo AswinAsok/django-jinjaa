@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
+from django.contrib.auth import authenticate
+
 from django.http import HttpResponse
 
 from .models import Todo
@@ -53,7 +55,7 @@ def signup(request):
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         username = request.POST['username']
-        password1 = request.POST['password']
+        password = request.POST['password']
         email = request.POST['email']
 
         if User.objects.filter(username=username).exists():
@@ -62,10 +64,22 @@ def signup(request):
             print("Email Registered")
         else:
             user = User.objects.create_user(
-                username=username, password=password1, email=email, first_name=first_name, last_name=last_name)
+                username=username, password=password, email=email, first_name=first_name, last_name=last_name)
             user.save()
-            print("Havvu!!")
 
         return redirect('/home')
     else:
         return render(request, 'signup.html')
+
+
+def login(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        username = request.POST['username']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            return redirect('/home')
+
+    else:
+        return render(request, 'login.html')
