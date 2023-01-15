@@ -1,3 +1,32 @@
 {% extends 'base.html' %} {% block content %}
-<h1>I will set your screens on Fire!!</h1>
+<div class="container">
+  <h4>In Progress Todos</h4>
+  {% for todo in todos %} {% if not todo.completed %}
+  <div class="container">
+    <div class="card m-3">
+      <h5 class="card-header">In Progress Todos</h5>
+      <div class="card-body">
+        <h5 class="card-title">{{todo.title}}</h5>
+        <p class="card-text">{{todo.description}}</p>
+        <p class="card-text">Complete By: {{todo.completiondate}}</p>
+        <a href="#" class="btn btn-primary">Mark as completed</a>
+      </div>
+    </div>
+  </div>
+  {% endif %} {% endfor %}
+
+  <h4>Completed Todos</h4>
+  {% for todo in todos %} {% if todo.completed %}
+  <div class="container">
+    <div class="card m-3">
+      <h5 class="card-header">Completed Todos</h5>
+      <div class="card-body">
+        <h5 class="card-title">{{todo.title}}</h5>
+        <p class="card-text">{{todo.description}}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %} {% endfor %}
+</div>
+
 {% endblock %}
