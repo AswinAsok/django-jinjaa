@@ -10,6 +10,11 @@ from .models import Todo
 
 def home(request):
     if request.user.is_authenticated:
+
+        pending = True
+        expired = True
+        completed = True
+
         todos = Todo.objects.all()
 
         today = date.today()
@@ -17,10 +22,16 @@ def home(request):
         incomplete_todos = []
 
         for todo in todos:
-            if todo.completiondate < today:
+            if todo.completiondate < today and not todo.completed:
                 incomplete_todos.append(todo)
+                if expired:
+                    expired = False
+            if pending and not todo.completed:
+                pending = False
+            if completed and todo.completed:
+                completed = False
 
-        return render(request, 'home.html', {'todos': todos, 'incomplete_todos':  incomplete_todos})
+        return render(request, 'home.html', {'todos': todos, 'incomplete_todos':  incomplete_todos, 'pending': pending, 'expired': expired, 'completed': completed})
     else:
         return redirect('/')
 

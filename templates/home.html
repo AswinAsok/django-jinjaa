@@ -1,6 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container">
+
+  {% if not pending %}
   <h4>In Progress Todos</h4>
+  {% endif  %}
+
+
   {% for todo in todos %} 
   {% if not todo.completed %}
   <div class="container">
@@ -22,20 +27,31 @@
   {% endif %} 
   {% endfor %}
 
-  <h4>Expired Todos</h4>
+  {% if not expired %}
+  {% if incomplete_todos and incomplete_todos|length > 0%}
+    <h4>Expired Todos</h4>
+  {% endif  %}
+  {% endif  %}
+
   {% for todo in incomplete_todos %}
+  {% if not todo.completed %}
   <div class="container">
     <div class="card m-3">
       <h5 class="card-header">Expired Todos</h5>
       <div class="card-body">
         <h5 class="card-title">{{todo.title}}</h5>
         <p class="card-text">{{todo.description}}</p>
+        <p class="card-text">Date: {{todo.completiondate}}</p>
       </div>
     </div>
   </div>
+  {% endif %} 
   {% endfor %}
 
+  {% if not completed %}
   <h4>Completed Todos</h4>
+  {% endif %}
+
   {% for todo in todos %} {% if todo.completed %}
   <div class="container">
     <div class="card m-3">
@@ -43,6 +59,7 @@
       <div class="card-body">
         <h5 class="card-title">{{todo.title}}</h5>
         <p class="card-text">{{todo.description}}</p>
+        <p class="card-text">Date: {{todo.completiondate}}</p>
       </div>
     </div>
   </div>
