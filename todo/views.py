@@ -73,9 +73,9 @@ def signup(request):
         email = request.POST['email']
 
         if User.objects.filter(username=username).exists():
-            print("Username Taken")
+            return render(request, 'signup.html', {'error': "Username Taken, Try Another Username"})
         elif User.objects.filter(email=email).exists():
-            print("Email Registered")
+            return render(request, 'signup.html', {'error': "Email Already Registered"})
         else:
             user = User.objects.create_user(
                 username=username, password=password, email=email, first_name=first_name, last_name=last_name)
