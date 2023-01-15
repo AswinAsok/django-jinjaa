@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <form action="create" method="post">
+    {% csrf_token%}
+
+    <fieldset>
+      <legend>Create Todo Task</legend>
+      <div class="mb-3">
+        <label for="TextInput" class="form-label">Todo Name</label>
+        <input
+          type="text"
+          name="title"
+          id="TextInput"
+          class="form-control"
+          placeholder="Todo Name"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="TextInput" class="form-label">Todo Description</label>
+        <input
+          type="text"
+          name="description"
+          id="TextInput"
+          class="form-control"
+          placeholder="Todo Name"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="TextInput" class="form-label">Completion Date</label>
+        <input
+          type="date"
+          name="date"
+          id="TextInput"
+          class="form-control"
+          placeholder="Todo Name"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </fieldset>
+  </form>
+</div>
+{% endblock %}
