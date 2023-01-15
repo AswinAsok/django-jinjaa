@@ -1,15 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+
 from .models import Todo
 
 
 # Create your views here
 # .
 
-def index(request):
+def home(request):
 
     todos = Todo.objects.all()
 
-    return render(request, 'index.html', {'todos': todos})
+    return render(request, 'home.html', {'todos': todos})
 
 
 def create(request):
@@ -29,4 +31,17 @@ def create(request):
 
         todos = Todo.objects.all()
 
-        return render(request, 'index.html', {'todos': todos})
+        return render(request, 'home.html', {'todos': todos})
+
+
+def update_value(request):
+    if request.method == 'POST':
+        obj_id = request.POST.get("object_id")
+        obj = Todo.objects.get(id=obj_id)
+        obj.completed = True
+        obj.save()
+
+    todos = Todo.objects.all()
+    return render(request, 'home.html', {'todos': todos})
+
+    # return redirect(to='home')

@@ -9,7 +9,12 @@
         <h5 class="card-title">{{todo.title}}</h5>
         <p class="card-text">{{todo.description}}</p>
         <p class="card-text">Complete By: {{todo.completiondate}}</p>
-        <a href="#" class="btn btn-primary">Mark as completed</a>
+      </button>
+      <form method="POST" action="update_value">
+        {% csrf_token %}
+        <input type="hidden" name="object_id" value="{{ todo.id }}">
+        <button class="btn btn-primary" type="submit">Update</button>
+      </form>
       </div>
     </div>
   </div>
