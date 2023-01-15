@@ -4,6 +4,8 @@ Jinjaa simple and user-friendly Todo application built with Django, Jinjaa, Boot
 
 ## Features
 - Add Todo List
+- Mark Todos as Completed
+- Expired Todos
 - Login
 - Signup
 - Admin Panel
