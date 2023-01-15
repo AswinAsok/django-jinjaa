@@ -2,20 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, logout
 
-
 from django.http import HttpResponse
 
 from .models import Todo
 
 
-# Create your views here
-# .
-
 def home(request):
-
-    todos = Todo.objects.all()
-
-    return render(request, 'home.html', {'todos': todos})
+    if request.user.is_authenticated:
+        todos = Todo.objects.all()
+        return render(request, 'home.html', {'todos': todos})
+    else:
+        return redirect('/')
 
 
 def create(request):
@@ -33,9 +30,7 @@ def create(request):
 
         todo.save()
 
-        todos = Todo.objects.all()
-
-        return render(request, 'home.html', {'todos': todos})
+        return redirect('/home')
 
 
 def update_value(request):
@@ -45,10 +40,7 @@ def update_value(request):
         obj.completed = True
         obj.save()
 
-    todos = Todo.objects.all()
-    return render(request, 'home.html', {'todos': todos})
-
-    # return redirect(to='home')
+    return redirect('/home')
 
 
 def signup(request):
@@ -69,6 +61,7 @@ def signup(request):
             user.save()
 
         return redirect('/home')
+
     else:
         return render(request, 'signup.html')
 
@@ -80,14 +73,14 @@ def login(request):
 
         user = authenticate(username=username, password=password)
         if user is not None:
+            auth.login(request, user)
             return redirect('/home')
-
     else:
         return render(request, 'login.html')
 
 
-def logout(request):
-    if request.method == 'GET':
+def userlogout(request):
+    if request.user.is_authenticated:
         logout(request)
-        
-    return render(request, 'login.html')
+
+    return redirect('/')
