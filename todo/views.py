@@ -32,7 +32,11 @@ def home(request):
             if completed and todo.completed:
                 completed = False
 
-        return render(request, 'home.html', {'todos': todos, 'incomplete_todos':  incomplete_todos, 'pending': pending, 'expired': expired, 'completed': completed})
+        render_data = {
+            'todos': todos, 'incomplete_todos':  incomplete_todos, 'pending': pending, 'expired': expired, 'completed': completed
+        }
+
+        return render(request, 'home.html', {'render_data': render_data})
     else:
         return redirect('/')
 
