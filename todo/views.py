@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, logout
+from django.contrib.auth.decorators import login_required
 from datetime import date as dated
 from datetime import datetime
 
@@ -8,7 +9,7 @@ from django.http import HttpResponse
 
 from .models import Todo
 
-
+@login_required(login_url='/')
 def home(request):
     if request.user.is_authenticated:
 
@@ -54,7 +55,7 @@ def home(request):
     else:
         return redirect('/')
 
-
+@login_required(login_url='/')
 def create(request):
     if request.method == 'GET' and request.user.is_authenticated:
         return render(request, 'create.html')
@@ -73,7 +74,7 @@ def create(request):
     else:
         return redirect('/')
 
-
+@login_required(login_url='/')
 def update_value(request):
     if request.method == 'POST':
         obj_id = request.POST.get("object_id")
@@ -120,7 +121,7 @@ def login(request):
     else:
         return render(request, 'login.html')
 
-
+@login_required(login_url='/')
 def userlogout(request):
     if request.user.is_authenticated:
         logout(request)
