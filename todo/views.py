@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
-from datetime import date as dated
+from django.core.exceptions import ValidationError
 from datetime import datetime
 
 from django.http import HttpResponse
@@ -19,14 +19,14 @@ def home(request):
 
         todos = Todo.objects.filter(user=request.user)
 
-        today = dated.today()
+        today = datetime.today()
 
         incomplete_todos = []
         inprogress_todos = []
         completed_todos = []
 
         for todo in todos:
-            if todo.completiondate < today and not todo.completed:
+            if todo.completiondate < today.date() and not todo.completed:
                 incomplete_todos.append(todo)
                 if expired:
                     expired = False
@@ -63,8 +63,13 @@ def create(request):
         title = request.POST['title']
         description = request.POST['description']
         date = request.POST['date']
+        
+        today = datetime.today()
+        if datetime.strptime(date, '%Y-%m-%d' ).date() < today.date(): 
+            return render(request, 'create.html', {'error': 'Date Cannot be Validated!'})
+
         completed = False
-        print(date)
+
         todo = Todo.objects.create(
             title=title, description=description, completiondate=date, completed=completed, user=request.user)
 
@@ -127,3 +132,5 @@ def userlogout(request):
         logout(request)
 
     return redirect('/')
+
+
