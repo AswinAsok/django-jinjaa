@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, logout
-from datetime import date
+from datetime import date as dated
+from datetime import datetime
 
 from django.http import HttpResponse
 
@@ -17,7 +18,7 @@ def home(request):
 
         todos = Todo.objects.filter(user=request.user)
 
-        today = date.today()
+        today = dated.today()
 
         incomplete_todos = []
 
@@ -37,9 +38,8 @@ def home(request):
 
 
 def create(request):
-    if request.method == 'GET':
+    if request.method == 'GET' and request.user.is_authenticated:
         return render(request, 'create.html')
-
     elif request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
@@ -52,6 +52,8 @@ def create(request):
         todo.save()
 
         return redirect('/home')
+    else:
+        return redirect('/')
 
 
 def update_value(request):
