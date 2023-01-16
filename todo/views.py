@@ -72,11 +72,11 @@ def update_value(request):
 
 def signup(request):
     if request.method == 'POST':
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        username = request.POST['username']
-        password = request.POST['password']
-        email = request.POST['email']
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
 
         if User.objects.filter(username=username).exists():
             return render(request, 'signup.html', {'error': "Username Taken, Try Another Username"})
@@ -85,7 +85,6 @@ def signup(request):
         else:
             user = User.objects.create_user(
                 username=username, password=password, email=email, first_name=first_name, last_name=last_name)
-            user.save()
 
         return redirect('/home')
 
