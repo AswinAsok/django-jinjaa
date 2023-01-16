@@ -9,5 +9,5 @@ class Todo(models.Model):
     description = models.TextField()
     completiondate = models.DateField()
     completed = models.BooleanField(default=False)
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     
