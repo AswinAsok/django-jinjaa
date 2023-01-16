@@ -21,19 +21,33 @@ def home(request):
         today = dated.today()
 
         incomplete_todos = []
+        inprogress_todos = []
+        completed_todos = []
 
         for todo in todos:
             if todo.completiondate < today and not todo.completed:
                 incomplete_todos.append(todo)
                 if expired:
                     expired = False
-            if pending and not todo.completed:
-                pending = False
-            if completed and todo.completed:
-                completed = False
+            elif not todo.completed:
+                inprogress_todos.append(todo)
+                if pending:
+                    pending = False
+               
+            elif todo.completed:
+                completed_todos.append(todo)
+                if completed:
+                    completed = False
+                
 
         render_data = {
-            'todos': todos, 'incomplete_todos':  incomplete_todos, 'pending': pending, 'expired': expired, 'completed': completed
+            'todos': todos,
+            'inprogress_todos': inprogress_todos,
+            'incomplete_todos':  incomplete_todos,
+            'completed_todos': completed_todos,
+            'pending': pending,
+            'expired': expired,
+            'completed': completed
         }
 
         return render(request, 'home.html', {'render_data': render_data})

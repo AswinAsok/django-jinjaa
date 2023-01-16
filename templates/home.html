@@ -10,8 +10,7 @@
   {% endif %}
 
 
-  {% for todo in render_data.todos %} 
-  {% if not todo.completed %}
+  {% for todo in render_data.inprogress_todos %} 
   <div class="container">
     <div class="card m-3">
       <h5 class="card-header">In Progress Todos</h5>
@@ -23,12 +22,11 @@
       <form method="POST" action="update_value">
         {% csrf_token %}
         <input type="hidden" name="object_id" value="{{ todo.id }}">
-        <button class="btn btn-primary" type="submit">Make Completed</button>
+        <button class="btn btn-primary" type="submit">Mark as Completed</button>
       </form>
       </div>
     </div>
-  </div>
-  {% endif %} 
+  </div> 
   {% endfor %}
 
   {% if not expired %}
@@ -38,7 +36,6 @@
   {% endif  %}
 
   {% for todo in render_data.incomplete_todos %}
-  {% if not todo.completed %}
   <div class="container">
     <div class="card m-3">
       <h5 class="card-header">Expired Todos</h5>
@@ -46,17 +43,21 @@
         <h5 class="card-title">{{todo.title}}</h5>
         <p class="card-text">{{todo.description}}</p>
         <p class="card-text">Date: {{todo.completiondate}}</p>
+        <form method="POST" action="update_value">
+          {% csrf_token %}
+          <input type="hidden" name="object_id" value="{{ todo.id }}">
+          <button class="btn btn-primary" type="submit">Mark as Completed</button>
+        </form>
       </div>
     </div>
   </div>
-  {% endif %} 
   {% endfor %}
 
   {% if not render_data.completed %}
   <h4>Completed Todos</h4>
   {% endif %}
 
-  {% for todo in render_data.todos %} {% if todo.completed %}
+  {% for todo in render_data.completed_todos %} 
   <div class="container">
     <div class="card m-3">
       <h5 class="card-header">Completed Todos</h5>
@@ -67,7 +68,7 @@
       </div>
     </div>
   </div>
-  {% endif %} {% endfor %}
+ {% endfor %}
 </div>
 </div>
 
