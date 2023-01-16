@@ -15,7 +15,7 @@ def home(request):
         expired = True
         completed = True
 
-        todos = Todo.objects.all()
+        todos = Todo.objects.filter(user=request.user)
 
         today = date.today()
 
@@ -47,7 +47,7 @@ def create(request):
         completed = False
         print(date)
         todo = Todo.objects.create(
-            title=title, description=description, completiondate=date, completed=completed)
+            title=title, description=description, completiondate=date, completed=completed, user=request.user)
 
         todo.save()
 
